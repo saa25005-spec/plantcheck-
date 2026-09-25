@@ -78,10 +78,15 @@
                 </div>
 
                 <!-- Logged Out View -->
-                <button id="btn-login-top" class="hidden items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm px-4 py-2 rounded-xl font-medium transition shadow-sm">
-                    <i class="fa-brands fa-google"></i>
-                    <span>Google ログイン</span>
-                </button>
+                <div id="logged-out-buttons" class="hidden flex items-center space-x-2">
+                    <button id="btn-login-guest-top" class="text-xs px-3 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-medium transition">
+                        ゲスト利用
+                    </button>
+                    <button id="btn-login-top" class="flex items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm px-4 py-2 rounded-xl font-medium transition shadow-sm">
+                        <i class="fa-brands fa-google"></i>
+                        <span>Google ログイン</span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -98,15 +103,21 @@
             <p class="text-stone-600 max-w-md mb-8 leading-relaxed">
                 Googleアカウントでログインして、野菜や果物の写真、草丈の成長グラフ、水やりや肥料の日誌をクラウドに安全に保存しましょう。
             </p>
-            <button id="btn-login-hero" class="flex items-center space-x-3 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-base px-6 py-3 rounded-xl shadow-md transition transform active:scale-95">
-                <svg class="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                </svg>
-                <span>Googleでログインして始める</span>
-            </button>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md">
+                <button id="btn-login-hero" class="w-full sm:w-auto flex items-center justify-center space-x-3 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-base px-6 py-3 rounded-xl shadow-md transition transform active:scale-95">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Googleでログイン</span>
+                </button>
+                <button id="btn-login-guest-hero" class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-base px-6 py-3 rounded-xl transition">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <span>ゲストとして試す</span>
+                </button>
+            </div>
         </section>
 
         <!-- Authenticated Main Dashboard -->
@@ -348,6 +359,44 @@
         </div>
     </div>
 
+    <!-- Modal: Unauthorized Domain Help -->
+    <div id="modal-domain-help" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center space-x-3 text-amber-600 border-b border-stone-100 pb-3">
+                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                <h3 class="font-bold text-lg text-stone-800">Firebaseドメイン許可の設定が必要です</h3>
+            </div>
+            <p class="text-sm text-stone-600 leading-relaxed">
+                GitHub Pages等のWebサイトでGoogleログインを行うには、Firebase Consoleに現在のドメインを許可登録する必要があります。
+            </p>
+            <div class="bg-stone-100 rounded-xl p-3 border border-stone-200">
+                <span class="block text-xs font-medium text-stone-500 mb-1">許可登録が必要なドメイン名:</span>
+                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-stone-300 font-mono text-sm text-stone-800">
+                    <span id="domain-to-copy">saa25005-spec.github.io</span>
+                    <button id="btn-copy-domain" class="text-xs bg-stone-200 hover:bg-stone-300 px-2.5 py-1 rounded font-sans transition">
+                        <i class="fa-regular fa-copy mr-1"></i>コピー
+                    </button>
+                </div>
+            </div>
+            <div class="text-xs text-stone-600 space-y-1 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                <p class="font-bold text-amber-800 mb-1">⚙️ 設定手順 (1〜2分で完了):</p>
+                <ol class="list-decimal list-inside space-y-1">
+                    <li><a href="https://console.firebase.google.com/" target="_blank" class="text-brand-700 font-semibold underline">Firebase Console</a> を開く</li>
+                    <li><b>Authentication</b> → <b>設定 (Settings)</b> タブを開く</li>
+                    <li><b>承認済みドメイン (Authorized domains)</b> に上記のドメインを追加</li>
+                </ol>
+            </div>
+            <div class="flex justify-between items-center pt-2">
+                <button id="btn-guest-fallback" class="text-xs text-brand-700 font-bold hover:underline">
+                    👉 設定完了まで「ゲスト機能」で試す
+                </button>
+                <button type="button" class="btn-close-modal bg-stone-800 hover:bg-stone-900 text-white px-4 py-2 rounded-xl text-xs font-semibold">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast Message -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 bg-stone-800 text-white text-sm px-4 py-3 rounded-xl shadow-lg transform transition translate-y-20 opacity-0 flex items-center space-x-2 pointer-events-none">
         <i id="toast-icon" class="fa-solid fa-circle-check text-brand-400"></i>
@@ -361,6 +410,7 @@
             getAuth, 
             GoogleAuthProvider, 
             signInWithPopup, 
+            signInAnonymously,
             signOut, 
             onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -404,10 +454,13 @@
         const elAuthArea = document.getElementById('auth-area');
         const elUserLoading = document.getElementById('user-loading');
         const elUserProfile = document.getElementById('user-profile');
+        const elLoggedOutButtons = document.getElementById('logged-out-buttons');
         const elUserAvatar = document.getElementById('user-avatar');
         const elUserName = document.getElementById('user-name');
         const elBtnLoginTop = document.getElementById('btn-login-top');
         const elBtnLoginHero = document.getElementById('btn-login-hero');
+        const elBtnLoginGuestTop = document.getElementById('btn-login-guest-top');
+        const elBtnLoginGuestHero = document.getElementById('btn-login-guest-hero');
         const elBtnLogout = document.getElementById('btn-logout');
 
         const elViewLoggedOut = document.getElementById('view-logged-out');
@@ -416,6 +469,7 @@
         // Modals
         const modalCrop = document.getElementById('modal-crop');
         const modalLog = document.getElementById('modal-log');
+        const modalDomainHelp = document.getElementById('modal-domain-help');
 
         // Auth State Handler
         onAuthStateChanged(auth, (user) => {
@@ -424,10 +478,15 @@
                 currentUser = user;
                 elUserProfile.classList.remove('hidden');
                 elUserProfile.classList.add('flex');
-                elBtnLoginTop.classList.add('hidden');
+                if (elLoggedOutButtons) elLoggedOutButtons.classList.add('hidden');
 
-                elUserAvatar.src = user.photoURL || 'https://via.placeholder.com/40';
-                elUserName.textContent = user.displayName || 'ユーザー';
+                if (user.isAnonymous) {
+                    elUserAvatar.src = 'https://placehold.co/80x80/16a34a/ffffff?text=Guest';
+                    elUserName.textContent = 'ゲストユーザー';
+                } else {
+                    elUserAvatar.src = user.photoURL || 'https://placehold.co/80x80/16a34a/ffffff?text=User';
+                    elUserName.textContent = user.displayName || 'ユーザー';
+                }
 
                 elViewLoggedOut.classList.add('hidden');
                 elViewLoggedIn.classList.remove('hidden');
@@ -437,7 +496,7 @@
             } else {
                 currentUser = null;
                 elUserProfile.classList.add('hidden');
-                elBtnLoginTop.classList.remove('hidden');
+                if (elLoggedOutButtons) elLoggedOutButtons.classList.remove('hidden');
 
                 elViewLoggedOut.classList.remove('hidden');
                 elViewLoggedOut.classList.add('flex');
@@ -457,12 +516,49 @@
                 showToast("ログインに成功しました", "success");
             } catch (error) {
                 console.error("Login failed:", error);
-                showToast("ログインに失敗しました: " + error.message, "error");
+                if (error.code === 'auth/unauthorized-domain') {
+                    showDomainHelpModal();
+                } else {
+                    showToast("ログインに失敗しました: " + error.message, "error");
+                }
             }
         };
 
-        elBtnLoginTop.addEventListener('click', handleGoogleLogin);
-        elBtnLoginHero.addEventListener('click', handleGoogleLogin);
+        // Anonymous Guest Login Handler
+        const handleGuestLogin = async () => {
+            try {
+                await signInAnonymously(auth);
+                modalDomainHelp.classList.add('hidden');
+                showToast("ゲストとしてログインしました");
+            } catch (error) {
+                console.error("Guest login failed:", error);
+                showToast("ゲストログインに失敗しました: " + error.message, "error");
+            }
+        };
+
+        // Show Domain Setup Help Modal
+        function showDomainHelpModal() {
+            const currentHostname = window.location.hostname || 'saa25005-spec.github.io';
+            document.getElementById('domain-to-copy').textContent = currentHostname;
+            modalDomainHelp.classList.remove('hidden');
+        }
+
+        // Copy Domain Button
+        document.getElementById('btn-copy-domain').addEventListener('click', () => {
+            const domainText = document.getElementById('domain-to-copy').textContent;
+            navigator.clipboard.writeText(domainText).then(() => {
+                showToast("ドメイン名をコピーしました");
+            }).catch(() => {
+                showToast("コピーに失敗しました", "error");
+            });
+        });
+
+        document.getElementById('btn-guest-fallback').addEventListener('click', handleGuestLogin);
+
+        if (elBtnLoginTop) elBtnLoginTop.addEventListener('click', handleGoogleLogin);
+        if (elBtnLoginHero) elBtnLoginHero.addEventListener('click', handleGoogleLogin);
+        if (elBtnLoginGuestTop) elBtnLoginGuestTop.addEventListener('click', handleGuestLogin);
+        if (elBtnLoginGuestHero) elBtnLoginGuestHero.addEventListener('click', handleGuestLogin);
 
         // Sign Out Handler
         elBtnLogout.addEventListener('click', async () => {
@@ -828,6 +924,7 @@
             btn.addEventListener('click', () => {
                 modalCrop.classList.add('hidden');
                 modalLog.classList.add('hidden');
+                modalDomainHelp.classList.add('hidden');
             });
         });
 
