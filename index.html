@@ -63,36 +63,47 @@
             </div>
 
             <!-- User Status / Auth Button -->
-            <div id="auth-area" class="flex items-center space-x-3">
-                <div id="user-loading" class="text-xs text-stone-400">
-                    <i class="fa-solid fa-circle-notch fa-spin"></i> 読み込み中...
-                </div>
-                
-                <!-- Logged In View -->
-                <div id="user-profile" class="hidden items-center space-x-3">
-                    <img id="user-avatar" class="w-9 h-9 rounded-full border border-brand-500 object-cover" src="" alt="User Avatar">
-                    <span id="user-name" class="text-sm font-medium text-stone-700 hidden sm:inline"></span>
-                    <button id="btn-logout" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-600 hover:bg-stone-100 transition duration-150 font-medium">
-                        ログアウト
-                    </button>
-                </div>
+        <div id="auth-area" class="flex items-center space-x-3">
+            <div id="user-loading" class="text-xs text-stone-400">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> 読み込み中...
+            </div>
+            
+            <!-- Logged In View -->
+            <div id="user-profile" class="hidden items-center space-x-3">
+                <img id="user-avatar" class="w-9 h-9 rounded-full border border-brand-500 object-cover" src="" alt="User Avatar">
+                <span id="user-name" class="text-sm font-medium text-stone-700 hidden sm:inline"></span>
+                <button id="btn-logout" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-600 hover:bg-stone-100 transition duration-150 font-medium">
+                    ログアウト
+                </button>
+            </div>
 
-                <!-- Logged Out View -->
-                <div id="logged-out-buttons" class="hidden flex items-center space-x-2">
-                    <button id="btn-login-guest-top" class="text-xs px-3 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-medium transition">
-                        ゲスト利用
-                    </button>
-                    <button id="btn-login-top" class="flex items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm px-4 py-2 rounded-xl font-medium transition shadow-sm">
-                        <i class="fa-brands fa-google"></i>
-                        <span>Google ログイン</span>
-                    </button>
-                </div>
+            <!-- Logged Out View -->
+            <div id="logged-out-buttons" class="hidden flex items-center space-x-2">
+                <button id="btn-login-guest-top" class="text-xs px-3 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-medium transition">
+                    ゲスト利用
+                </button>
+                <button id="btn-login-top" class="flex items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm px-4 py-2 rounded-xl font-medium transition shadow-sm">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Google ログイン</span>
+                </button>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
+<!-- Domain Setup Alert Banner for GitHub Pages -->
+<div id="domain-alert-banner" class="bg-amber-500 text-white px-4 py-2 text-xs font-medium flex items-center justify-between hidden">
+    <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Googleログインを利用するには、Firebase Consoleに現在のドメイン (<b><span class="current-host-name"></span></b>) の登録が必要です。</span>
+    </div>
+    <button id="btn-show-domain-guide" class="bg-amber-700 hover:bg-amber-800 px-2.5 py-1 rounded text-white text-[11px] font-bold transition">
+        設定方法を見る
+    </button>
+</div>
+
+<!-- Main Content Area -->
+<main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
 
         <!-- Unauthenticated Hero Landing -->
         <section id="view-logged-out" class="hidden flex-col items-center justify-center py-12 text-center">
@@ -515,11 +526,14 @@
                 await signInWithPopup(auth, provider);
                 showToast("ログインに成功しました", "success");
             } catch (error) {
-                console.error("Login failed:", error);
-                if (error.code === 'auth/unauthorized-domain') {
+                console.warn("Login status note:", error.code);
+                if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/popup-blocked' || error.code === 'auth/auth-domain-config-required') {
                     showDomainHelpModal();
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    showToast("ログインがキャンセルされました", "info");
                 } else {
-                    showToast("ログインに失敗しました: " + error.message, "error");
+                    showToast("ログイン設定が必要です。ヘルプ画面をご確認ください", "error");
+                    showDomainHelpModal();
                 }
             }
         };
@@ -532,16 +546,28 @@
                 showToast("ゲストとしてログインしました");
             } catch (error) {
                 console.error("Guest login failed:", error);
-                showToast("ゲストログインに失敗しました: " + error.message, "error");
+                showToast("ゲストログインエラー: " + error.message, "error");
             }
         };
 
         // Show Domain Setup Help Modal
         function showDomainHelpModal() {
             const currentHostname = window.location.hostname || 'saa25005-spec.github.io';
-            document.getElementById('domain-to-copy').textContent = currentHostname;
+            const domainEl = document.getElementById('domain-to-copy');
+            if (domainEl) domainEl.textContent = currentHostname;
             modalDomainHelp.classList.remove('hidden');
         }
+
+        // Auto-check current domain status
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentHost = window.location.hostname;
+            document.querySelectorAll('.current-host-name').forEach(el => el.textContent = currentHost);
+            if (currentHost.includes('github.io')) {
+                document.getElementById('domain-alert-banner')?.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('btn-show-domain-guide')?.addEventListener('click', showDomainHelpModal);
 
         // Copy Domain Button
         document.getElementById('btn-copy-domain').addEventListener('click', () => {
